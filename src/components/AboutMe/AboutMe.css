@@ -1,0 +1,280 @@
+.aboutme {
+  max-width: 1140px;
+  min-height: 1079px;
+  margin: 0 auto;
+}
+
+.aboutme__title {
+  font-size: 22px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  letter-spacing: -0.88px;
+  padding: 110px 0 0 0;
+  margin: 0;
+}
+
+.aboutme__divider {
+  width: 100%;
+  background-color: black;
+  height: 1px;
+  margin-top: 23px;
+}
+
+.aboutme__info-container {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 66px;
+}
+
+.aboutme__text-container {
+}
+
+.aboutme__name {
+  font-size: 50px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 58px;
+  letter-spacing: -2px;
+  margin: 0;
+}
+
+.aboutme__in-short {
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 20px;
+  margin: 18px 0 0;
+}
+
+.aboutme__info {
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 22px;
+  margin: 26px 0 0;
+  max-width: 600px;
+}
+
+.aboutme__avatar {
+  width: 270px;
+  height: 327px;
+  border-radius: 10px;
+  object-fit: cover;
+}
+
+.aboutme__github {
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+  text-decoration: none;
+  color: black;
+  margin-top: 99px;
+  display: block;
+  transition: opacity 0.5s;
+}
+
+.aboutme__github:hover {
+  opacity: 0.5;
+}
+
+.aboutme__portfolio {
+  color: #a0a0a0;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 20px;
+  margin-top: 101px;
+}
+
+.aboutme__link-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: stretch;
+  transition: opacity 0.5s;
+}
+
+.aboutme__link-container:hover {
+  opacity: 0.5;
+}
+
+.aboutme__link-container:nth-child(5) {
+  margin: 50px 0 18px 0;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #e8e8e8;
+}
+
+.aboutme__link-container:nth-child(6) {
+  padding-bottom: 12px;
+  border-bottom: 1px solid #e8e8e8;
+  margin-bottom: 17px;
+}
+
+.aboutme__link {
+  font-size: 30px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 50px;
+  letter-spacing: -1.2px;
+  text-decoration: none;
+  color: black;
+}
+
+.aboutme__link-symbol {
+  font-size: 30px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 60px;
+  letter-spacing: -1.2px;
+  margin: 0;
+}
+
+@media screen and (max-width: 1279px) {
+  .aboutme {
+    max-width: 667px;
+    min-height: 994px;
+  }
+
+  .aboutme__title {
+    padding: 91px 0 0 0;
+  }
+
+  .aboutme__divider {
+  }
+
+  .aboutme__info-container {
+  }
+
+  .aboutme__text-container {
+  }
+
+  .aboutme__name {
+    font-size: 40px;
+    line-height: 40px;
+    letter-spacing: -1.6px;
+  }
+
+  .aboutme__in-short {
+    font-size: 12px;
+    line-height: 18px;
+    margin: 16px 0 0;
+  }
+
+  .aboutme__info {
+    font-size: 12px;
+    line-height: 18px;
+    max-width: 400px;
+    margin: 19px 0 0;
+  }
+
+  .aboutme__github {
+    margin-top: 88px;
+  }
+
+  .aboutme__avatar {
+    width: 255px;
+    height: 307px;
+  }
+
+  .aboutme__portfolio {
+    margin-top: 89px;
+  }
+
+  .aboutme__link-container {
+  }
+
+  .aboutme__link-container:nth-child(5) {
+  }
+
+  .aboutme__link-container:nth-child(6) {
+  }
+
+  .aboutme__link {
+    font-size: 28px;
+    letter-spacing: -1.12px;
+  }
+
+  .aboutme__link-symbol {
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .aboutme {
+    max-width: 292px;
+    min-height: 1198px;
+  }
+
+  .aboutme__title {
+    font-size: 18px;
+    letter-spacing: -0.72px;
+    padding: 72px 0 0 0;
+  }
+
+  .aboutme__divider {
+    margin-top: 27px;
+  }
+
+  .aboutme__info-container {
+    flex-direction: column;
+    margin-top: 60px;
+    gap: 40px;
+  }
+
+  .aboutme__text-container {
+  }
+
+  .aboutme__name {
+    font-size: 30px;
+    letter-spacing: -1.2px;
+  }
+
+  .aboutme__in-short {
+    font-size: 11px;
+    line-height: 16px;
+  }
+
+  .aboutme__info {
+    font-size: 11px;
+    line-height: 16px;
+  }
+
+  .aboutme__github {
+    margin-top: 41px;
+  }
+
+  .aboutme__avatar {
+    width: 292px;
+    height: 352px;
+    order: -1;
+  }
+
+  .aboutme__portfolio {
+    font-size: 14px;
+    margin-top: 70px;
+  }
+
+  .aboutme__link-container {
+  }
+
+  .aboutme__link-container:nth-child(5) {
+    margin: 41px 0 21px 0;
+    padding-bottom: 18px;
+  }
+
+  .aboutme__link-container:nth-child(6) {
+    padding-bottom: 20px;
+  }
+
+  .aboutme__link {
+    font-size: 18px;
+    line-height: 28px;
+    letter-spacing: -0.72px;
+  }
+
+  .aboutme__link-symbol {
+    font-size: 18px;
+    line-height: 28px;
+    letter-spacing: -0.72px;
+  }
+}
