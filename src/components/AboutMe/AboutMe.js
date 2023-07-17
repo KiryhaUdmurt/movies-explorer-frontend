@@ -23,25 +23,6 @@ function AboutMe() {
         </div>
         <img className="aboutme__avatar" src={profilepic} alt="Фото студента" />
       </div>
-      <p className="aboutme__portfolio">Портфолио</p>
-      <div className="aboutme__link-container">
-        <a href="" className="aboutme__link">
-          Статичный сайт
-        </a>
-        <p className="aboutme__link-symbol">↗</p>
-      </div>
-      <div className="aboutme__link-container">
-        <a href="" className="aboutme__link">
-          Адаптивный сайт
-        </a>
-        <p className="aboutme__link-symbol">↗</p>
-      </div>
-      <div className="aboutme__link-container">
-        <a href="" className="aboutme__link">
-          Одностраничное приложение
-        </a>
-        <p className="aboutme__link-symbol">↗</p>
-      </div>
     </section>
   );
 }
