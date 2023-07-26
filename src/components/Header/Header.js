@@ -1,16 +1,24 @@
-import { Link } from "react-router-dom";
-import logo from "../../images/logo.svg";
+import { useLocation } from "react-router-dom";
 import "./Header.css";
 import Navigation from "../Navigation/Navigation";
+import Logo from "../Logo/Logo";
 
-function Header() {
+function Header({ menuActive, setActive }) {
+  const location = useLocation();
+  const headerClassname = `header ${
+    location.pathname === "/" && "header_logged"
+  } ${
+    location.pathname !== "/" &&
+    location.pathname !== "/movies" &&
+    location.pathname !== "/saved-movies" &&
+    location.pathname !== "/profile" &&
+    "header_disabled"
+  }`;
   return (
-    <header className="header">
+    <header className={headerClassname}>
       <div className="header__content-container">
-        <Link className="header__logo-container" to="/">
-          <img className="header__logo" src={logo} alt="logo" />
-        </Link>
-        <Navigation />
+        <Logo />
+        <Navigation menuActive={menuActive} setActive={setActive} />
       </div>
     </header>
   );

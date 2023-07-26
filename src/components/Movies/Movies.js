@@ -1,16 +1,17 @@
-import MoviesCard from "../MoviesCard/MoviesCard";
+import MoreBtn from "../MoreBtn/MoreBtn";
 import MoviesCardList from "../MoviesCardList/MoviesCardList";
 import Preloader from "../Preloader/Preloader";
 import SearchForm from "../SearchForm/SearchForm";
+import "./Movies.css";
 
-function Movies() {
+function Movies({ searchResult }) {
+  const loading = false;
   return (
-    <>
+    <main className="movies">
       <SearchForm />
-      <Preloader />
-      <MoviesCardList />
-      <MoviesCard />
-    </>
+      {loading ? <Preloader /> : <MoviesCardList searchResult={searchResult} />}
+      <MoreBtn searchResult={searchResult} />
+    </main>
   );
 }
 

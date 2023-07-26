@@ -90,15 +90,9 @@
     margin-top: 91px;
   }
 
-  .about-project__divider {
-  }
-
   .about-project__text-container {
     grid-template-columns: 319px 319px;
     gap: 22px 29px;
-  }
-
-  .about-project__text_size_m {
   }
 
   .about-project__text_size_s {
@@ -109,9 +103,6 @@
   .about-project__timeline-container {
     padding-top: 94px;
     grid-template-columns: 139px 527px;
-  }
-
-  .about-project__timeline_size_m {
   }
 
   .about-project__timeline_size_m:first-child {

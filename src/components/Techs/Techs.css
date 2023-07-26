@@ -88,9 +88,6 @@
     padding: 90px 0 0 0;
   }
 
-  .techs__divider {
-  }
-
   .techs__count {
     margin: 80px 0 0;
   }
@@ -119,9 +116,6 @@
 }
 
 @media screen and (max-width: 767px) {
-  .techs {
-  }
-
   .techs__content-container {
     max-width: 285px;
     min-height: 651px;
@@ -156,11 +150,5 @@
     margin: 50px auto 0;
     max-width: 178px;
     justify-content: flex-start;
-  }
-
-  .techs__private-box {
-  }
-
-  .techs__item {
   }
 }

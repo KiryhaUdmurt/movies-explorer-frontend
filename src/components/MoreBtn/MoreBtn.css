@@ -1,0 +1,28 @@
+.more-btn {
+  display: block;
+  width: 320px;
+  height: 36px;
+  border-radius: 6px;
+  background-color: #f9f9f9;
+  margin: 50px auto 80px;
+  padding: 0;
+  text-align: center;
+  font-family: Inter;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+  border: none;
+  cursor: pointer;
+  transition: brightness 0.2s;
+}
+
+.more-btn:hover {
+  filter: brightness(90%);
+}
+
+@media screen and (max-width: 767px) {
+  .more-btn {
+    width: 240px;
+  }
+}

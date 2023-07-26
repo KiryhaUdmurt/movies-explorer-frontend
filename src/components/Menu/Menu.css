@@ -1,0 +1,157 @@
+.menu {
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  transform: translateX((100%));
+  transition: all 0.2s;
+}
+
+.menu_active {
+  transform: translateX((0));
+}
+
+.menu_disabled {
+  display: none;
+}
+
+.menu__dark {
+  width: 100vw;
+  height: 100vh;
+  backdrop-filter: brightness(70%);
+  position: absolute;
+}
+
+.menu__content {
+  margin-left: 31.5%;
+  width: 70%;
+  height: 100vh;
+  background-color: white;
+  transition: all 0.8s;
+}
+
+.menu__close-btn {
+  background-image: url(../../images/close-menu-icon.svg);
+  background-repeat: no-repeat;
+  background-position: center;
+  cursor: pointer;
+  border: 0;
+  background-color: transparent;
+  transition: opacity 0.2s;
+  padding: 0;
+  width: 22px;
+  height: 22px;
+  margin: 27px 0 0 89%;
+}
+
+.menu__close-btn:hover {
+  opacity: 0.3;
+}
+
+.menu__links {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 108px;
+}
+
+.menu__main {
+  color: #000;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+  text-decoration: none;
+  transition: opacity 0.3s;
+  padding-bottom: 4px;
+}
+
+.menu__main:hover {
+  opacity: 0.5;
+}
+
+.menu__movies {
+  color: #000;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+  text-decoration: none;
+  transition: opacity 0.3s;
+  margin-top: 26px;
+  padding-bottom: 4px;
+}
+
+.menu__movies:hover {
+  opacity: 0.5;
+}
+
+.menu__saved-movies {
+  color: #000;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+  text-decoration: none;
+  transition: opacity 0.3s;
+  margin-top: 24px;
+  padding-bottom: 4px;
+}
+
+.menu__saved-movies:hover {
+  opacity: 0.5;
+}
+
+.menu__current-page {
+  border-bottom: 2px solid black;
+}
+
+.menu__profile {
+  color: #000;
+  text-decoration: none;
+  display: flex;
+  justify-content: space-between;
+  border: 2px solid #aaaaaa;
+  border-radius: 50px;
+  gap: 7px;
+  padding: 4px 7px;
+  transition: opacity 0.3s;
+  margin-top: 620px;
+}
+
+.menu__profile:hover {
+  opacity: 0.5;
+}
+
+.menu__profile-txt {
+  margin: 0;
+}
+
+@media screen and (max-width: 767px) {
+  .menu__content {
+    margin: 0;
+    width: 100%;
+  }
+
+  .menu__close-btn {
+    margin: 18px 0 0 87.5%;
+  }
+
+  .menu__links {
+    margin-top: 102px;
+  }
+
+  .menu__movies {
+    margin-top: 21px;
+  }
+
+  .menu__saved-movies {
+    margin-top: 21px;
+  }
+
+  .menu__profile {
+    gap: 4px;
+    padding: 3px 7px;
+    margin-top: 442px;
+  }
+}

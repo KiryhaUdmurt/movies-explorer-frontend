@@ -1,0 +1,160 @@
+.signup {
+  display: flex;
+  height: 100vh;
+  justify-content: center;
+  align-items: center;
+}
+
+.signup__flexbox {
+  max-width: 396px;
+}
+
+.signup__greeting {
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+  margin: 36px 0 0;
+}
+
+.signup__form {
+  margin: 40px 0 0;
+  display: flex;
+  flex-direction: column;
+  width: 396px;
+}
+
+.signup__label {
+  display: flex;
+  flex-direction: column;
+  color: #a0a0a0;
+  font-size: 10px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  height: 44px;
+  border-bottom: 1px solid #e8e8e8;
+}
+
+.signup__label:hover {
+  border-bottom: 1px solid #ff6838;
+}
+
+.signup__input {
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  padding: 0;
+  margin-top: 5px;
+  border: 0;
+  outline: 0;
+}
+
+.signup__input_error {
+  color: #ee3465;
+}
+
+.signup__error-container {
+  height: 24px;
+  position: relative;
+}
+
+.signup__error {
+  position: absolute;
+  top: 30%;
+  color: #ee3465;
+  font-size: 10px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.signup__submit {
+  color: #fff;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+  width: 396px;
+  height: 45px;
+  background-color: #ff6838;
+  margin-top: 128px;
+  border: 0;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.signup__submit:hover {
+  opacity: 0.6;
+}
+
+.signup__submit_disabled {
+  background-color: #a0a0a0;
+  cursor: unset;
+}
+
+.signup__txt {
+  color: #a0a0a0;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  margin: 18px 0 0 89px;
+  display: inline-block;
+}
+
+.signup__login-btn {
+  color: #ff6838;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  border: 0;
+  background-color: transparent;
+  transition: opacity 0.2s;
+  cursor: pointer;
+  text-decoration: none;
+  margin-left: 5px;
+}
+
+.signup__login-btn:hover {
+  opacity: 0.6;
+}
+
+@media screen and (max-width: 767px) {
+  .signup__flexbox {
+    width: 260px;
+  }
+
+  .signup__logo {
+    display: block;
+    margin: 0 auto;
+  }
+
+  .signup__greeting {
+    margin-top: 50px;
+    text-align: center;
+  }
+
+  .signup__form {
+    margin-top: 80px;
+    width: 260px;
+  }
+
+  .signup__submit {
+    margin-top: 222px;
+    width: 260px;
+    font-size: 12px;
+  }
+
+  .signup__txt {
+    font-size: 12px;
+    margin: 13px 0 0 36px;
+  }
+
+  .signup__login-btn {
+    font-size: 12px;
+  }
+}
