@@ -1,24 +1,28 @@
 import { useForm } from "react-hook-form";
 import "./Profile.css";
+import { useState } from "react";
 
 function Profile() {
   const {
     register,
-    formState: { isValid },
+    formState: { errors, isValid },
   } = useForm({
-    mode: "onBlur"
+    mode: "onBlur",
   });
+
+  const [activeInput, setActiveInput] = useState(true);
 
   return (
     <main className="profile">
       <p className="profile__greeting">Привет, Кирилл!</p>
-      <form className="profile__form">
+      <form className="profile__form" onSubmit={() => setActiveInput(true)}>
         <label className="profile__label">
           Имя
           <input
             className="profile__input"
             type="text"
             placeholder="Редактировать имя"
+            readOnly={activeInput}
             {...register("name", {
               required: "Обязательное поле",
               minLength: {
@@ -39,31 +43,55 @@ function Profile() {
             className="profile__input"
             type="email"
             placeholder="Редактировать почту"
+            readOnly={activeInput}
             {...register("email", {
               required: "Обязательное поле",
               pattern: {
                 value: /^[A-Z0-9._%+-]+@[A-Z0-9-]+.+.[A-Z]{2,4}$/i,
-                message: "Введите корректный e-mail"
-              }
+                message: "Введите корректный e-mail",
+              },
             })}
           />
         </label>
-        <button
-          className={`profile__change-btn ${isValid ? "profile__change-btn_active" : ""}`}
-          type="submit"
-          aria-label="Изменить профиль"
-          disabled={!isValid}
-        >
-          Редактировать
-        </button>
+        {!activeInput && (
+          <>
+            <div className="profile__error-container">
+              {errors && (
+                <p className="profile__error">
+                  При обновлении профиля произошла ошибка.
+                </p>
+              )}
+            </div>
+            <button
+              className="profile__save-changes"
+              type="submit"
+              disabled={!isValid}
+              onSubmit={(e) => e.preventDefault()}
+            >
+              Сохранить
+            </button>
+          </>
+        )}
+        {activeInput && (
+          <>
+            <button
+              className="profile__change-btn"
+              type="button"
+              aria-label="Изменить профиль"
+              onClick={() => setActiveInput(false)}
+            >
+              Редактировать
+            </button>
+            <button
+              className="profile__exit"
+              type="button"
+              aria-label="Выйти из аккаунта"
+            >
+              Выйти из аккаунта
+            </button>
+          </>
+        )}
       </form>
-      <button
-        className="profile__exit"
-        type="button"
-        aria-label="Выйти из аккаунта"
-      >
-        Выйти из аккаунта
-      </button>
     </main>
   );
 }
