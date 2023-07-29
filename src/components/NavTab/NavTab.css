@@ -1,0 +1,30 @@
+.navtab__link {
+  color: #fff;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 16px;
+  border: 1px solid #FFF;
+  border-radius: 3px;
+  opacity: .6;
+  padding: 10px 20px;
+  text-decoration: none;
+  transition: opacity .5s;
+}
+
+.navtab__link:hover {
+  opacity: .3;
+}
+
+@media screen and (max-width: 1279px) {
+  .navtab {
+    text-align: center;
+    margin-top: 100px;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .navtab {
+    margin-top: 88px;
+  }
+}

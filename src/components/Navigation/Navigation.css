@@ -1,0 +1,147 @@
+.navigation__unlogged {
+  display: flex;
+  align-items: center;
+  margin: 0;
+  gap: 30px;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 16px;
+  padding-bottom: 3px;
+}
+
+.navigation__registration {
+  color: #fff;
+  text-decoration: none;
+  text-align: center;
+  transition: opacity 0.3s;
+}
+
+.navigation__registration:hover {
+  opacity: .5;
+}
+
+.navigation__login {
+  background-color: #2be080;
+  border-radius: 3px;
+  color: #000;
+  padding: 8px 20px;
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+.navigation__login:hover {
+  color: #fff;
+}
+
+.navigation__logged {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.navigation__movies-links {
+  display: flex;
+  gap: 17px;
+  padding-right: 46.5rem;
+}
+
+.navigation__movies {
+  color: #000;
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 18px;
+  text-decoration: none;
+  transition: opacity 0.3s;
+}
+
+.navigation__movies:hover {
+  opacity: .5;
+}
+
+.navigation__saved-movies {
+  color: #000;
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 18px;
+  text-decoration: none;
+  transition: opacity 0.3s;
+}
+
+.navigation__saved-movies:hover {
+  opacity: .5;
+}
+
+.navigation__profile {
+  transition: opacity 0.3s;
+}
+
+.navigation__profile:hover {
+  opacity: .5;
+}
+
+.navigation__pic {
+  fill: #fff;
+}
+
+.navigation__profile-word {
+  color: #000;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 16px;
+  margin: 0;
+}
+
+.navigation__burger-btn {
+  display: none;
+  width: 44px;
+  height: 42px;
+  padding: 0;
+  background-image: url(../../images/burger-menu-icon.svg);
+  background-repeat: no-repeat;
+  background-position: center;
+  cursor: pointer;
+  border: 0;
+  background-color: transparent;
+  transition: opacity 0.2s;
+}
+
+.navigation__burger-btn:hover {
+  opacity: 0.6;
+}
+
+.navigation_white {
+  color: white;
+  fill: white;
+}
+
+.navigation__current-page {
+  font-weight: 500;
+}
+
+@media screen and (max-width: 1279px) {
+  .navigation__burger-btn {
+    display: block;
+  }
+
+  .navigation__logged {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .nav__links {
+    font-size: 10px;
+    gap: 15px;
+  }
+
+  .nav__registration {
+  }
+
+  .nav__login {
+    padding: 5px 12px;
+  }
+}

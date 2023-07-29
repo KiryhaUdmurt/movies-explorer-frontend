@@ -1,0 +1,148 @@
+.movie {
+  width: 364px;
+  height: 281px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  border-radius: 6px;
+  box-shadow: 0px 4px 30px 0px rgba(0, 0, 0, 0.08);
+}
+
+.movie__image {
+  width: 364px;
+  height: 203px;
+  border-radius: 6px 6px 0 0;
+  object-fit: cover;
+}
+
+.movie__info-bar {
+  width: 100%;
+  min-height: 78px;
+  border-radius: 0 0 6px 6px;
+  position: relative;
+}
+
+.movie__title {
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+  padding: 16px 12px 0 16px;
+  width: 290px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  margin: 0;
+  display: inline-block;
+}
+
+.movie__like-btn {
+  background-image: url(../../images/liked.svg);
+  width: 30px;
+  height: 30px;
+  transition: 0.15s;
+  cursor: pointer;
+  background-color: white;
+  border: 0;
+  background-repeat: no-repeat;
+  background-position: center;
+  position: absolute;
+  top: 10px;
+  right: 15px;
+}
+
+.movie__like-btn:hover {
+  opacity: 0.6;
+}
+
+.movie__like-btn_active {
+  background-image: url(../../images/unliked.svg);
+}
+
+.movie__delete-btn {
+  background-image: url(../../images/d4.svg);
+  width: 30px;
+  height: 30px;
+  transition: 0.15s;
+  cursor: pointer;
+  background-color: white;
+  border: 0;
+  background-repeat: no-repeat;
+  background-position: center;
+  position: absolute;
+  top: 10px;
+  right: 15px;
+}
+
+.movie__delete-btn:hover {
+  opacity: 0.5;
+}
+
+.movie__duration {
+  color: #a0a0a0;
+  font-size: 11px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  padding: 13px 0 16px 16px;
+  margin: 0;
+}
+
+@media screen and (max-width: 1279px) {
+  .movie {
+    width: 339px;
+    height: 262px;
+  }
+
+  .movie__image {
+    width: 339px;
+    height: 190px;
+  }
+
+  .movie__info-bar {
+    min-height: 72px;
+  }
+
+  .movie__title {
+    width: 260px;
+    padding: 15px 0 0 14px ;
+    top: 8px;
+    right: 14px;
+  }
+
+  .movie__duration {
+    padding: 12px 0 14px 14px;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .movie {
+    width: 300px;
+    height: 237px;
+  }
+
+  .movie__image {
+    width: 300px;
+    height: 168px;
+  }
+
+  .movie__info-bar {
+    min-height: 69px;
+  }
+
+  .movie__title {
+    width: 240px;
+    font-size: 12px;
+  }
+
+  .movie__like-btn {
+    top: 7px;
+    right: 7px;
+  }
+
+  .movie__duration {
+    font-size: 10px;
+    padding-top: 9px;
+  }
+}
+
