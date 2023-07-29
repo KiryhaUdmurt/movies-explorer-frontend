@@ -51,6 +51,12 @@
   outline: 0;
 }
 
+.signup__input:focus {
+  outline: rgb(128 128 128 / 25%) solid thin;
+  outline-offset: 3px;
+  border-radius: 5px;
+}
+
 .signup__input_error {
   color: #ee3465;
 }

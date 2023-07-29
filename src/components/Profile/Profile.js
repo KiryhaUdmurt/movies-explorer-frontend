@@ -22,7 +22,7 @@ function Profile() {
             className="profile__input"
             type="text"
             placeholder="Редактировать имя"
-            readOnly={activeInput}
+            disabled={activeInput}
             {...register("name", {
               required: "Обязательное поле",
               minLength: {
@@ -43,7 +43,7 @@ function Profile() {
             className="profile__input"
             type="email"
             placeholder="Редактировать почту"
-            readOnly={activeInput}
+            disabled={activeInput}
             {...register("email", {
               required: "Обязательное поле",
               pattern: {

@@ -83,7 +83,8 @@
   }
 
   .footer__content-container {
-    max-width: 708px;
+    min-width: 708px;
+    padding: 0 30px;
   }
 
   .footer__feat {
@@ -101,6 +102,7 @@
 
   .footer__content-container {
     min-width: 300px;
+    padding: 0 15px;
   }
 
   .footer__feat {

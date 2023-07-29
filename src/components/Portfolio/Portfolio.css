@@ -4,7 +4,7 @@
   min-height: 425px;
 }
 
-.portfolio__portfolio {
+.portfolio__title {
   color: #a0a0a0;
   font-size: 18px;
   font-style: normal;
@@ -17,15 +17,10 @@
   display: flex;
   justify-content: space-between;
   align-items: stretch;
-  transition: opacity 0.5s;
-}
-
-.portfolio__link-container:hover {
-  opacity: 0.5;
 }
 
 .portfolio__link-container:nth-child(2) {
-  margin: 50px 0 18px 0;
+  margin: 46px 0 18px 0;
   padding-bottom: 10px;
   border-bottom: 1px solid #e8e8e8;
 }
@@ -45,6 +40,18 @@
   text-decoration: none;
   color: black;
   width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: opacity 0.2s;
+}
+
+.portfolio__link:hover {
+  opacity: 0.6;
+}
+
+.portfolio__link-txt {
+  margin: 0;
 }
 
 .portfolio__link-symbol {

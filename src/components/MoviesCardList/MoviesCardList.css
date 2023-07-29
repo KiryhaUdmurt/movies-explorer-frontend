@@ -1,6 +1,6 @@
 .cardlist {
   max-width: 1140px;
-  margin: 0 auto;
+  margin: 72px auto 0;
 }
 
 .cardlist__items {
@@ -64,6 +64,7 @@
 @media screen and (max-width: 767px) {
   .cardlist {
     min-width: 300px;
+    margin-top: 40px;
   }
 
   .cardlist__items {

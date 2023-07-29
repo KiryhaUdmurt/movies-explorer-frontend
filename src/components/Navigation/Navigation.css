@@ -75,13 +75,6 @@
 }
 
 .navigation__profile {
-  text-decoration: none;
-  display: flex;
-  justify-content: space-between;
-  border: 2px solid rgba(170, 170, 170, 0.2);
-  border-radius: 50px;
-  gap: 7px;
-  padding: 8px 12px;
   transition: opacity 0.3s;
 }
 
@@ -122,6 +115,7 @@
 
 .navigation_white {
   color: white;
+  fill: white;
 }
 
 .navigation__current-page {

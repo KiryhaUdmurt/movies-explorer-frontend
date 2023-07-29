@@ -21,12 +21,14 @@ function Footer() {
           <a
             className="footer__practikum-link"
             href="https://practicum.yandex.ru/"
+            target="_blank"
           >
             Яндекс.Практикум
           </a>
           <a
             className="footer__github-link"
             href="https://github.com/KiryhaUdmurt"
+            target="_blank"
           >
             Github
           </a>

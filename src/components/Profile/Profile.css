@@ -26,6 +26,7 @@
 }
 
 .profile__input {
+  background-color: #fff;
   font-size: 11px;
   font-style: normal;
   font-weight: 400;
@@ -35,6 +36,12 @@
   border: 0;
   padding: 0;
   outline: 0;
+}
+
+.profile__input:focus {
+  outline: rgb(128 128 128 / 25%) solid thin;
+  outline-offset: 3px;
+  border-radius: 5px;
 }
 
 .profile__divider {
@@ -71,6 +78,7 @@
   margin: 15px auto 0;
   display: block;
   transition: opacity 0.2s;
+  cursor: pointer;
 }
 
 .profile__exit:hover {

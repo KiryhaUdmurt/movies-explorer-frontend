@@ -56,8 +56,9 @@
 }
 
 .signin__input:focus {
-  outline: #ff6838 solid thin groove;
+  outline: rgb(128 128 128 / 25%) solid thin;
   outline-offset: 3px;
+  border-radius: 5px;
 }
 
 .signin__error-container {
