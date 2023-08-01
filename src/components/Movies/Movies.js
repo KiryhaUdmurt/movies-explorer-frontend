@@ -4,13 +4,16 @@ import Preloader from "../Preloader/Preloader";
 import SearchForm from "../SearchForm/SearchForm";
 import "./Movies.css";
 
-function Movies({ searchResult }) {
-  const loading = false;
+function Movies({ cards, search, setSearch, moviesError, isLoading }) {
   return (
     <main className="movies">
-      <SearchForm />
-      {loading ? <Preloader /> : <MoviesCardList searchResult={searchResult} />}
-      <MoreBtn searchResult={searchResult} />
+      <SearchForm search={search} setSearch={setSearch} />
+      {isLoading ? (
+        <Preloader />
+      ) : (
+        <MoviesCardList cards={cards} moviesError={moviesError} />
+      )}
+      <MoreBtn />
     </main>
   );
 }

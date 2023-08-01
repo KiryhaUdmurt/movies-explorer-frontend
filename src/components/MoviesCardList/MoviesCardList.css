@@ -33,7 +33,7 @@
   border: none;
 }
 
-.carlist__no-results {
+.cardlist__no-results {
   display: flex;
   justify-content: center;
   height: 600px;
@@ -43,6 +43,22 @@
 .cardlist__no-results-text {
   opacity: 0.6;
   font-size: 20px;
+}
+
+.cardlist__req-error {
+  display: flex;
+  justify-content: center;
+  height: 600px;
+  align-items: center;
+}
+
+.cardlist__req-error-text {
+  opacity: 0.6;
+  font-size: 20px;
+  line-height: 1.5;
+  display: inline-block;
+  max-width: 500px;
+  text-align: center;
 }
 
 @media screen and (max-width: 1279px) {

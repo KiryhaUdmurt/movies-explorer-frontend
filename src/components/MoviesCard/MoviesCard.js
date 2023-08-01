@@ -1,19 +1,31 @@
+import React from "react";
 import "./MoviesCard.css";
 import moviePreview from "../../images/pic__COLOR_pic.png";
 import { useLocation } from "react-router-dom";
 
-function MoviesCard() {
+function MoviesCard({ card }) {
   const isLiked = 0;
   const location = useLocation();
   const movieLikeBtnClassName = `movie__like-btn ${
     isLiked && "movie__like-btn_active"
   }`;
 
+  const hours = Math.floor(card.duration / 60);
+  const minutes = card.duration - hours * 60;
+
+
   return (
     <div className="movie">
-      <img className="movie__image" src={moviePreview} alt="Превью фильма" />
+      <a className="movie__trailer-link" href={card.trailerLink} target="_blank">
+        <img
+        className="movie__image"
+        src={`https://api.nomoreparties.co/${card.image.url}`}
+        alt="Превью фильма"
+      />
+      </a> 
+      
       <div className="movie__info-bar">
-        <h3 className="movie__title">33 слова о дизайне</h3>
+        <h3 className="movie__title">{card.nameRU}</h3>
         {location.pathname === "/movies" && (
           <button
             className={movieLikeBtnClassName}
@@ -28,7 +40,9 @@ function MoviesCard() {
             aria-label="Удалить фильм"
           />
         )}
-        <p className="movie__duration">1ч 47м</p>
+        <p className="movie__duration">
+          {hours}ч {minutes}м
+        </p>
       </div>
     </div>
   );

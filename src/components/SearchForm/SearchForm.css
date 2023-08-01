@@ -7,6 +7,7 @@
   align-items: center;
   justify-content: space-between;
   flex-direction: column;
+  position: relative;
 }
 
 .search-form__search-box {
@@ -93,6 +94,13 @@
   background-color: #E8E8E8;
 }
 
+.search-form__error-container {
+  position: absolute;
+  color: #ee3465;
+  top: 99px;
+  letter-spacing: 1px;
+}
+
 @media screen and (max-width: 1279px) {
   .search-form {
     min-width: 707px;
@@ -163,6 +171,11 @@
 
   .search-form__search-divider {
     display: none;
+  }
+
+  .search-form__error-container {
+    top: 83px;
+    font-size: smaller;
   }
 }
 

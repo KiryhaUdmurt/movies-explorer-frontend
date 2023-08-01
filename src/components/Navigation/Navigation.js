@@ -62,7 +62,7 @@ function Navigation({ menuActive, setActive }) {
                   x="1"
                   y="1"
                   stroke="#AAA"
-                  stroke-width="2"
+                  strokeWidth="2"
                   opacity=".2"
                   rx="15"
                 />
@@ -74,9 +74,9 @@ function Navigation({ menuActive, setActive }) {
                 <path
                   className={whiteTextClass}
                   fill="#000"
-                  fill-rule="evenodd"
+                  fillRule="evenodd"
                   d="M20 13a2 2 0 1 1-4 0 2 2 0 0 1 4 0Zm2 0a4 4 0 1 1-8 0 4 4 0 0 1 8 0Zm-6 5a4 4 0 0 0-4 4v1h2v-1a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v1h2v-1a4 4 0 0 0-4-4h-4Z"
-                  clip-rule="evenodd"
+                  clipRule="evenodd"
                 />
               </svg>
             </NavLink>

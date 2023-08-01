@@ -37,7 +37,7 @@
 }
 
 .movie__like-btn {
-  background-image: url(../../images/liked.svg);
+  background-image: url(../../images/unliked.svg);
   width: 30px;
   height: 30px;
   transition: 0.15s;
@@ -56,7 +56,7 @@
 }
 
 .movie__like-btn_active {
-  background-image: url(../../images/unliked.svg);
+  background-image: url(../../images/liked.svg);
 }
 
 .movie__delete-btn {
