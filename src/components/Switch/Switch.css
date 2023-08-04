@@ -18,7 +18,7 @@ height: 22px;
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: #2BE080;
+  background-color: #EBEBEB;
   border-radius: 30px;
 }
 
@@ -27,7 +27,7 @@ height: 22px;
   content: "";
   width: 18px;
   height: 18px;
-  right: 2px;
+  right: 17px;
   bottom: 2px;
   background-color: #FFFFFF;
   transition: 0.3s;
@@ -35,9 +35,9 @@ height: 22px;
 }
 
 .switch__input:checked + .switch__slider::before {
-  transform: translateX(-15px);
+  transform: translateX(15px);
 }
 
 .switch__input:checked + .switch__slider {
-  background-color: #EBEBEB;
+  background-color: #2BE080;
 }

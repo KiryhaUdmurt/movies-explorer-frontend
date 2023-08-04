@@ -4,16 +4,31 @@ import Preloader from "../Preloader/Preloader";
 import SearchForm from "../SearchForm/SearchForm";
 import "./Movies.css";
 
-function Movies({ cards, search, setSearch, moviesError, isLoading, loadMore, elementNum }) {
+function Movies({
+  cards,
+  search,
+  setSearch,
+  moviesError,
+  isLoading,
+  loadMore,
+  elementNum,
+  isToggled,
+  setIsToggled,
+}) {
   return (
     <main className="movies">
-      <SearchForm search={search} setSearch={setSearch} />
+      <SearchForm
+        search={search}
+        setSearch={setSearch}
+        isToggled={isToggled}
+        setIsToggled={setIsToggled}
+      />
       {isLoading ? (
         <Preloader />
       ) : (
         <MoviesCardList cards={cards} moviesError={moviesError} />
       )}
-      <MoreBtn loadMore={loadMore} cards={cards} elementNum={elementNum}/>
+      <MoreBtn loadMore={loadMore} cards={cards} elementNum={elementNum} />
     </main>
   );
 }

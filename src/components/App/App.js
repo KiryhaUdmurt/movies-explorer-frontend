@@ -19,9 +19,16 @@ function App() {
   const [currentUser, setCurrentUser] = useState({});
   const [cards, setCards] = useState([]);
   const [menuActive, setMenuActive] = useState(false);
-  const [search, setSearch] = useState("");
+  const [search, setSearch] = useState(() => {
+    const searchTxt = localStorage.getItem('searchTxt');
+    return searchTxt || "";
+  });
   const [movieError, setMovieError] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [isToggled, setIsToggled] = useState(() => {
+    const savedToggle = JSON.parse(localStorage.getItem("toggle"));
+    return savedToggle || false;
+  });
   const screenElement = document.getElementById("root");
 
   const initialElements = () => {
@@ -38,9 +45,7 @@ function App() {
   };
   const [elementNum, setElementNum] = useState(initialElements);
 
-  console.log(elementNum);
-
-  useEffect(() => {
+  const fetchCards = () => {
     setIsLoading(true);
     moviesApi
       .getAllCards()
@@ -55,36 +60,36 @@ function App() {
         setIsLoading(false);
         setElementNum(initialElements);
       });
+  }
+
+  useEffect(() => {
+    fetchCards()
   }, [search]);
 
-  // const sortedCards = useMemo(() => {
-  //   return cards.filter(card => card.nameRU.toLowerCase().includes(search))
-  // }, [search])
-
-  // const sortedCards = () => {
-  //   return cards.filter(card => card.nameRU.toLowerCase().includes(search));
-  // }
-
-  // const sortedCards =
-  //   search === ""
-  //     ? ""
-  //     : cards
-  //         .filter((card) => card.nameRU.toLowerCase().includes(search))
-  //         .slice(0, elementNum);
 
   let cardsArr = [];
   const sortedCards =
     search === ""
       ? ""
       : cards
-          .filter((card) =>
-            cardsArr
-              .concat(card.nameRU, card.nameEN)
-              .toString()
-              .toLowerCase()
-              .includes(search)
+          .filter(
+            (card) =>
+              (isToggled ? card.duration < 40 : true) &&
+              cardsArr
+                .concat(card.nameRU, card.nameEN)
+                .toString()
+                .toLowerCase()
+                .includes(search)
           )
           .slice(0, elementNum);
+  
+  localStorage.setItem('sortedCards', JSON.stringify(sortedCards));
+
+  const savedCards = JSON.parse(localStorage.getItem('sortedCards'));
+
+  useEffect(() => {
+
+  }, [])
 
   const loadMore = () => {
     if (screenElement.clientWidth >= 1300) {
@@ -109,13 +114,15 @@ function App() {
             path="/movies"
             element={
               <Movies
-                cards={sortedCards}
+                cards={savedCards}
                 search={search}
                 setSearch={setSearch}
                 moviesError={movieError}
                 isLoading={isLoading}
                 loadMore={loadMore}
                 elementNum={elementNum}
+                isToggled={isToggled}
+                setIsToggled={setIsToggled}
               />
             }
           />
