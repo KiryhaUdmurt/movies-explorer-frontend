@@ -1,18 +1,16 @@
-import Switch from "../Switch/Switch";
 import "./SearchForm.css";
 import searchIcon from "../../images/icon.svg";
-import { useEffect, useRef, useState } from "react";
-import { useForm } from "react-hook-form";
+import { useRef, useState } from "react";
 
-function SearchForm({ search, setSearch, isToggled, setIsToggled }) {
-
-  const switchBtn = document.querySelector(".switch__input");
+function SearchForm({
+  search,
+  setSearch,
+  isToggled,
+  setIsToggled,
+  handleSearch,
+}) {
   const searchRef = useRef("");
   const toggleRef = useRef(false);
-  const [preSearch, setPreSearch] = useState(() => {
-    const searchTxt = localStorage.getItem('searchTxt');
-    return searchTxt || "";
-  })
   const [searchDirty, setSearchDirty] = useState(false);
   const [searchError, setSearchError] = useState("Введите ключевое слово");
 
@@ -21,25 +19,33 @@ function SearchForm({ search, setSearch, isToggled, setIsToggled }) {
   };
 
   const searchHandler = (e) => {
-    setPreSearch(e.target.value);
-    e.target.value.length === 0 ? setSearchError("Введите ключевое слово") : setSearchError("");
-  }
+    setSearch(e.target.value);
+    e.target.value.length === 0
+      ? setSearchError("Введите ключевое слово")
+      : setSearchError("");
+  };
 
   const submitHandler = (e) => {
     e.preventDefault();
-    setSearch(preSearch);
-    localStorage.setItem('searchTxt', searchRef.current.value);
-    console.log(searchRef.current.value)
+    handleSearch();
+    localStorage.setItem("searchTxt", searchRef.current.value);
+    console.log(searchRef.current.value);
+  };
+  {
+
   }
   const handleToggle = () => {
-    setIsToggled(!isToggled);
-    localStorage.setItem('toggle', toggleRef.current.checked);
-  }
+    setIsToggled((isToggled) => !isToggled);
+    localStorage.setItem("toggle", toggleRef.current.checked);
+  };
 
   return (
     <section className="search-form">
       <div className="search-form__search-box">
-        <form className="search-form__input-box" onSubmit={e => submitHandler(e)}>
+        <form
+          className="search-form__input-box"
+          onSubmit={(e) => submitHandler(e)}
+        >
           <img
             src={searchIcon}
             className="search-form__input-icon"
@@ -48,8 +54,8 @@ function SearchForm({ search, setSearch, isToggled, setIsToggled }) {
           <input
             className="search-form__input"
             name="search"
-            value={preSearch}
-            onChange={e => searchHandler(e)}
+            value={search}
+            onChange={(e) => searchHandler(e)}
             type="text"
             placeholder=" Найти фильм..."
             onBlur={blurHandler}
@@ -61,17 +67,15 @@ function SearchForm({ search, setSearch, isToggled, setIsToggled }) {
         </form>
         <div className="search-form__short-film-box">
           <div className="search-form__search-divider"></div>
-          {/* <Switch isToggled={isToggled} setIsToggled={setIsToggled}/> */}
-          <label className="switch">
+          <label className="search-form__switch">
             <input
-              className="switch__input"
+              className="search-form__switch-input"
               type="checkbox"
-              // value={isToggled}
               checked={isToggled}
               onChange={handleToggle}
               ref={toggleRef}
             />
-            <span className="switch__slider" />
+            <span className="search-form__switch-slider" />
           </label>
           <p className="search-form__txt">Короткометражки</p>
         </div>

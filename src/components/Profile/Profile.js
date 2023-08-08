@@ -1,27 +1,40 @@
 import { useForm } from "react-hook-form";
 import "./Profile.css";
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { CurrentUserContext } from "../../contexts/CurrentUserContext";
+import { mainApi } from "../../utils/MainApi";
 
-function Profile() {
+function Profile({ logOut, setCurrentUser }) {
+
+  const currentUser = useContext(CurrentUserContext);
+
   const {
     register,
     formState: { errors, isValid },
+    handleSubmit,
+    setValue
   } = useForm({
-    mode: "onBlur",
+    mode: "onChange",
   });
 
   const [activeInput, setActiveInput] = useState(true);
 
+  const onSubmit = (data) => {
+    setActiveInput(true);
+    mainApi.updateUserInfo(data);
+    setCurrentUser(data);
+  }
+
   return (
     <main className="profile">
       <p className="profile__greeting">Привет, Кирилл!</p>
-      <form className="profile__form" onSubmit={() => setActiveInput(true)}>
+      <form className="profile__form" onSubmit={handleSubmit(onSubmit)}>
         <label className="profile__label">
           Имя
           <input
             className="profile__input"
             type="text"
-            placeholder="Редактировать имя"
+            placeholder={currentUser.name}
             disabled={activeInput}
             {...register("name", {
               required: "Обязательное поле",
@@ -42,7 +55,7 @@ function Profile() {
           <input
             className="profile__input"
             type="email"
-            placeholder="Редактировать почту"
+            placeholder={currentUser.email}
             disabled={activeInput}
             {...register("email", {
               required: "Обязательное поле",
@@ -56,7 +69,7 @@ function Profile() {
         {!activeInput && (
           <>
             <div className="profile__error-container">
-              {errors && (
+              {(errors.name || errors.email) && (
                 <p className="profile__error">
                   При обновлении профиля произошла ошибка.
                 </p>
@@ -65,8 +78,7 @@ function Profile() {
             <button
               className="profile__save-changes"
               type="submit"
-              disabled={!isValid}
-              onSubmit={(e) => e.preventDefault()}
+              // disabled={!isValid}
             >
               Сохранить
             </button>
@@ -78,7 +90,11 @@ function Profile() {
               className="profile__change-btn"
               type="button"
               aria-label="Изменить профиль"
-              onClick={() => setActiveInput(false)}
+              onClick={() => {
+                setActiveInput(false);
+                setValue('name', currentUser.name);
+                setValue('email', currentUser.email);
+              }}
             >
               Редактировать
             </button>
@@ -86,6 +102,7 @@ function Profile() {
               className="profile__exit"
               type="button"
               aria-label="Выйти из аккаунта"
+              onClick={logOut}
             >
               Выйти из аккаунта
             </button>

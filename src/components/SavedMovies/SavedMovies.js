@@ -2,11 +2,14 @@ import MoviesCardList from "../MoviesCardList/MoviesCardList";
 import SearchForm from "../SearchForm/SearchForm";
 import "./SavedMovies.css";
 
-function SavedMovies() {
+function SavedMovies({ handleCardLike, likedCards }) {
   return (
     <main className="saved-movies">
       <SearchForm />
-      <MoviesCardList />
+      <MoviesCardList
+        handleCardLike={handleCardLike}
+        likedCards={likedCards}
+      />
     </main>
   );
 }

@@ -14,6 +14,8 @@ function Movies({
   elementNum,
   isToggled,
   setIsToggled,
+  handleSearch,
+  handleCardLike,
 }) {
   return (
     <main className="movies">
@@ -22,11 +24,16 @@ function Movies({
         setSearch={setSearch}
         isToggled={isToggled}
         setIsToggled={setIsToggled}
+        handleSearch={handleSearch}
       />
       {isLoading ? (
         <Preloader />
       ) : (
-        <MoviesCardList cards={cards} moviesError={moviesError} />
+        <MoviesCardList
+          cards={cards}
+          moviesError={moviesError}
+          handleCardLike={handleCardLike}
+        />
       )}
       <MoreBtn loadMore={loadMore} cards={cards} elementNum={elementNum} />
     </main>

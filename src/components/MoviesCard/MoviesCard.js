@@ -1,11 +1,12 @@
-import React from "react";
+import React, { useContext, useEffect, useState } from "react";
 import "./MoviesCard.css";
-import moviePreview from "../../images/pic__COLOR_pic.png";
 import { useLocation } from "react-router-dom";
+import { CurrentUserContext } from "../../contexts/CurrentUserContext";
 
-function MoviesCard({ card }) {
-  const isLiked = 0;
+function MoviesCard({ card, onMovieClick }) {
+  const currentUser = useContext(CurrentUserContext);
   const location = useLocation();
+  const [isLiked, setIsLiked] = useState(false);
   const movieLikeBtnClassName = `movie__like-btn ${
     isLiked && "movie__like-btn_active"
   }`;
@@ -13,17 +14,27 @@ function MoviesCard({ card }) {
   const hours = Math.floor(card.duration / 60);
   const minutes = card.duration - hours * 60;
 
+  function handleCardClick() {
+    setIsLiked((isLiked) => !isLiked)
+    onMovieClick(card);
+  }
+
+
 
   return (
     <div className="movie">
-      <a className="movie__trailer-link" href={card.trailerLink} target="_blank">
+      <a
+        className="movie__trailer-link"
+        href={card.trailerLink}
+        target="_blank"
+      >
         <img
-        className="movie__image"
-        src={`https://api.nomoreparties.co/${card.image.url}`}
-        alt="Превью фильма"
-      />
-      </a> 
-      
+          className="movie__image"
+          src={`https://api.nomoreparties.co/${card.image.url}`}
+          alt="Превью фильма"
+        />
+      </a>
+
       <div className="movie__info-bar">
         <h3 className="movie__title">{card.nameRU}</h3>
         {location.pathname === "/movies" && (
@@ -31,6 +42,7 @@ function MoviesCard({ card }) {
             className={movieLikeBtnClassName}
             type="button"
             aria-label="В избранное"
+            onClick={handleCardClick}
           />
         )}
         {location.pathname === "/saved-movies" && (
