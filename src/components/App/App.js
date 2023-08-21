@@ -20,62 +20,74 @@ import ProtectedRouteElement from "../ProtectedRoute/ProtectedRoute";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [token, setToken] = useState("");
-  const [isRegistered, setIsRegistered] = useState(false);
-
   const [currentUser, setCurrentUser] = useState({});
   const [cards, setCards] = useState(() => {
-    const prevCards = JSON.parse(localStorage.getItem("allCards"));
+    const prevCards = JSON.parse(localStorage.getItem("foundMovies"));
     return prevCards || [];
   });
-  // const [isLiked, setIsLiked] = useState(false);
   const [likedCards, setLikedCards] = useState([]);
   const [menuActive, setMenuActive] = useState(false);
   const [search, setSearch] = useState(() => {
     const searchTxt = localStorage.getItem("searchTxt");
     return searchTxt || "";
   });
+  const [savedMoviesSearch, setSavedMoviesSearch] = useState("");
   const [movieError, setMovieError] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isToggled, setIsToggled] = useState(() => {
     const savedToggle = JSON.parse(localStorage.getItem("toggle"));
     return savedToggle || false;
   });
+  const [isToggledSavedCards, setIsToggledSavedCards] = useState(false);
   const screenElement = document.getElementById("root");
   const navigate = useNavigate();
 
-  // useEffect(() => {
-  //   if (localStorage.getItem("token")) {
-  //     const token = localStorage.getItem("token");
-  //     setToken(token);
-  //   }
-  // }, []);
+  useEffect(() => {
+    mainApi
+      .getSavedMovies()
+      .then((cards) => {
+        const ownFilms = cards
+          .filter((item) => item.owner === currentUser._id)
+          .reverse();
+        setLikedCards(ownFilms);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, [currentUser]);
 
-  // useEffect(() => {
-  //   if (!token) {
-  //     return;
-  //   }
+  const handleLikeCard = (card) => {
+    mainApi
+      .addMovie(card)
+      .then((card) => {
+        setLikedCards([...likedCards, card]);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
-  //   auth
-  //     .getContent(token)
-  //     .then((user) => {
-  //       if (user) {
-  //         console.log(user);
-  //         setCurrentUser(user);
-  //         setIsLoggedIn(true);
-  // navigate("/movies", { replace: true });
-  //   }
-  // })
-  // .catch((err) => console.log(err));
+  const isLikedCard = (card) => {
+    return likedCards.some((item) => item.movieId === card.id);
+  };
 
-  // mainApi
-  //   .getUser()
-  //   .then((user) => {
-  //     console.log(user)
-  //     setCurrentUser(user);
-  //   })
-  //   .catch((err) => console.log(err));
-  // }, [token, navigate]);
+  const handleDeleteCard = (card) => {
+    const cardToDelete = likedCards.find((item) => item.movieId === card.id);
+    console.log(card);
+    console.log(cardToDelete);
+    mainApi
+      .deleteMovie(cardToDelete ? cardToDelete._id : card._id)
+      .then(() => {
+        setLikedCards(
+          likedCards.filter((item) => {
+            return cardToDelete
+              ? item._id !== cardToDelete._id
+              : item._id !== card._id;
+          })
+        );
+      })
+      .catch((err) => console.log(err));
+  };
 
   useEffect(() => {
     checkToken();
@@ -89,7 +101,6 @@ function App() {
           .getContent(token)
           .then((user) => {
             if (user) {
-              console.log(user);
               setCurrentUser(user);
               setIsLoggedIn(true);
               // navigate("/movies", { replace: true });
@@ -104,11 +115,9 @@ function App() {
     auth
       .register(email, password, name)
       .then((res) => {
-        setIsRegistered(true);
         navigate("/signin", { replace: true });
       })
       .catch((err) => {
-        setIsRegistered(false);
         console.log(err);
       });
   };
@@ -117,7 +126,6 @@ function App() {
     auth
       .authorize(email, password)
       .then((res) => {
-        console.log(res);
         localStorage.setItem("token", res.token);
         setIsLoggedIn(true);
         navigate("/movies", { replace: true });
@@ -128,18 +136,17 @@ function App() {
   };
 
   const logOut = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("allCards");
-    localStorage.removeItem("searchTxt");
-    localStorage.removeItem("toggle");
-    localStorage.removeItem("sortedCards");
+    window.localStorage.clear();
+    localStorage.clear("token");
+    setCards([]);
+    setSearch("");
+    setIsToggled("");
     setIsLoggedIn(false);
-    setToken("");
     setCurrentUser({});
   };
 
   const initialElements = () => {
-    if (screenElement.clientWidth >= 1300) {
+    if (screenElement.clientWidth >= 1280) {
       return 12;
     } else if (
       screenElement.clientWidth < 1280 &&
@@ -156,9 +163,21 @@ function App() {
     setIsLoading(true);
     moviesApi
       .getAllCards()
-      .then((cards) => {
-        setCards(cards);
-        localStorage.setItem("allCards", JSON.stringify(cards));
+      .then((movies) => {
+        let langConcatArr = [];
+        const filteredMovies = movies.filter((item) =>
+          langConcatArr
+            .concat(item.nameRU, item.nameEN)
+            .toString()
+            .toLowerCase()
+            .includes(search)
+        );
+        const foundMovies = isToggled
+          ? filteredMovies.filter((item) => item.duration <= 40)
+          : filteredMovies;
+
+        localStorage.setItem("foundMovies", JSON.stringify(foundMovies));
+        setCards(foundMovies);
       })
       .catch((err) => {
         console.log(err);
@@ -170,27 +189,40 @@ function App() {
       });
   };
 
-  let cardsArr = [];
-  const sortedCards =
-    search === ""
-      ? []
-      : cards
-          .filter(
-            (card) =>
-              (isToggled ? card.duration < 40 : true) &&
-              cardsArr
-                .concat(card.nameRU, card.nameEN)
-                .toString()
-                .toLowerCase()
-                .includes(search)
-          )
-          .slice(0, elementNum);
+  const filteredMovies = isToggled
+    ? cards.filter((item) => item.duration <= 40)
+    : cards;
 
-  localStorage.setItem("sortedCards", JSON.stringify(sortedCards));
-  const savedCards = JSON.parse(localStorage.getItem("sortedCards"));
+  const handleSearchSavedCards = () => {
+    let savedCardsArr = [];
+    setLikedCards(
+      likedCards.filter((card) =>
+        savedCardsArr
+          .concat(card.nameRU, card.nameEN)
+          .toString()
+          .toLowerCase()
+          .includes(savedMoviesSearch)
+      )
+    );
+  };
+  const filteredSavedFilms = isToggledSavedCards
+    ? likedCards.filter((card) => card.duration <= 40)
+    : likedCards;
+
+  // let savedCardsArr = [];
+  // const filteredSavedFilms = likedCards.filter(
+  //   (card) =>
+  //     (isToggledSavedCards ? card.duration <= 40 : true) &&
+  //     savedCardsArr
+  //       .concat(card.nameRU, card.nameEN)
+  //       .toString()
+  //       .toLowerCase()
+  //       .includes(savedMoviesSearch)
+  // );
+
 
   const loadMore = () => {
-    if (screenElement.clientWidth >= 1300) {
+    if (screenElement.clientWidth >= 1280) {
       setElementNum(elementNum + 3);
     } else if (
       screenElement.clientWidth < 1280 &&
@@ -198,64 +230,9 @@ function App() {
     ) {
       setElementNum(elementNum + 2);
     } else {
-      setElementNum(elementNum + 1);
+      setElementNum(elementNum + 2);
     }
   };
-
-  const getSavedCards = () => {
-    mainApi
-      .getSavedMovies()
-      .then((cards) => {
-        setLikedCards(cards)
-
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
-
-  useEffect(() => {
-    getSavedCards();
-  }, [])
-
-  const handleCardLike = (card) => {
-    const isLiked = card.owner === currentUser._id;
-
-    isLiked
-      ? mainApi
-          .deleteMovie(card.id)
-          .then(() => {
-            setLikedCards((state) => {
-              state.filter((c) => {
-                return c.id !== card.id;
-              })
-            })
-          })
-          .catch((err) => {
-            console.log(err);
-          })
-      : mainApi
-          .addMovie(card)
-          .then((card) => {
-            console.log(card);
-            setLikedCards([...likedCards, card]);
-          })
-          .catch((err) => {
-            console.log(card);
-            console.log(err);
-          });
-  };
-
-  const handleDeleteCard = (card) => {
-    mainApi.deleteMovie(card.id)
-    .then(() => {
-      setLikedCards((state) => {
-        state.filter((c) => {
-          return c.id !== card.id;
-        })
-      })
-    })
-  }
 
   return (
     <div className="app">
@@ -273,7 +250,7 @@ function App() {
               <ProtectedRouteElement
                 isLoggedIn={isLoggedIn}
                 element={Movies}
-                cards={savedCards}
+                cards={filteredMovies.slice(0, elementNum)}
                 search={search}
                 setSearch={setSearch}
                 moviesError={movieError}
@@ -283,7 +260,9 @@ function App() {
                 isToggled={isToggled}
                 setIsToggled={setIsToggled}
                 handleSearch={handleSearch}
-                handleCardLike={handleCardLike}
+                handleLikeCard={handleLikeCard}
+                isLikedCard={isLikedCard}
+                handleDeleteCard={handleDeleteCard}
               />
             }
           />
@@ -293,8 +272,16 @@ function App() {
               <ProtectedRouteElement
                 element={SavedMovies}
                 isLoggedIn={isLoggedIn}
-                handleCardLike={handleCardLike}
-                likedCards={likedCards}
+                handleLikeCard={handleLikeCard}
+                isLikedCard={isLikedCard}
+                likedCards={filteredSavedFilms}
+                setLikedCards={setLikedCards}
+                handleDeleteCard={handleDeleteCard}
+                handleSearchSavedCards={handleSearchSavedCards}
+                isToggledSavedCards={isToggledSavedCards}
+                setIsToggledSavedCards={setIsToggledSavedCards}
+                savedMoviesSearch={savedMoviesSearch}
+                setSavedMoviesSearch={setSavedMoviesSearch}
               />
             }
           />

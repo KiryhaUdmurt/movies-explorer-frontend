@@ -1,42 +1,76 @@
 import "./SearchForm.css";
 import searchIcon from "../../images/icon.svg";
 import { useRef, useState } from "react";
+import { useLocation } from "react-router-dom";
 
 function SearchForm({
   search,
   setSearch,
   isToggled,
   setIsToggled,
+  isToggledSavedCards,
+  setIsToggledSavedCards,
   handleSearch,
+  handleSearchSavedCards,
+  savedMoviesSearch,
+  setSavedMoviesSearch,
 }) {
   const searchRef = useRef("");
+  const savedSearchRef = useRef("");
   const toggleRef = useRef(false);
+  const savedCardsToggleRef = useRef(false);
   const [searchDirty, setSearchDirty] = useState(false);
   const [searchError, setSearchError] = useState("Введите ключевое слово");
+  const location = useLocation();
+  const moviesPath = location.pathname === "/movies";
 
   const blurHandler = () => {
     setSearchDirty(true);
   };
 
-  const searchHandler = (e) => {
+  const handleMainSearch = (e) => {
     setSearch(e.target.value);
     e.target.value.length === 0
       ? setSearchError("Введите ключевое слово")
       : setSearchError("");
   };
 
-  const submitHandler = (e) => {
-    e.preventDefault();
+  const handleSavedSearch = (e) => {
+    setSavedMoviesSearch(e.target.value);
+    e.target.value.length === 0
+      ? setSearchError("Введите ключевое слово")
+      : setSearchError("");
+  };
+
+  const searchHandler = (e) => {
+    moviesPath ? handleMainSearch(e) : handleSavedSearch(e);
+  };
+
+  const searchMain = () => {
     handleSearch();
     localStorage.setItem("searchTxt", searchRef.current.value);
-    console.log(searchRef.current.value);
   };
-  {
 
-  }
-  const handleToggle = () => {
+  const searchSaved = () => {
+    handleSearchSavedCards();
+  };
+
+  const submitHandler = (e) => {
+    e.preventDefault();
+    moviesPath ? searchMain() : searchSaved();
+  };
+
+  const handleSavedToggle = () => {
+    setIsToggledSavedCards((isToggledSavedCards) => !isToggledSavedCards);
+  };
+
+  const handleMainToggle = () => {
     setIsToggled((isToggled) => !isToggled);
     localStorage.setItem("toggle", toggleRef.current.checked);
+  };
+
+  const handleToggle = () => {
+    moviesPath ? handleMainToggle() : handleSavedToggle();
   };
 
   return (
@@ -54,12 +88,12 @@ function SearchForm({
           <input
             className="search-form__input"
             name="search"
-            value={search}
+            value={moviesPath ? search : savedMoviesSearch}
             onChange={(e) => searchHandler(e)}
             type="text"
             placeholder=" Найти фильм..."
             onBlur={blurHandler}
-            ref={searchRef}
+            ref={moviesPath ? searchRef : savedSearchRef}
           ></input>
           <button className="search-form__btn" type="submit">
             Найти
@@ -71,9 +105,9 @@ function SearchForm({
             <input
               className="search-form__switch-input"
               type="checkbox"
-              checked={isToggled}
+              checked={moviesPath ? isToggled : isToggledSavedCards}
               onChange={handleToggle}
-              ref={toggleRef}
+              ref={moviesPath ? toggleRef : savedCardsToggleRef}
             />
             <span className="search-form__switch-slider" />
           </label>

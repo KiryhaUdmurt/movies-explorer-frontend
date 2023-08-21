@@ -25,6 +25,10 @@ function Profile({ logOut, setCurrentUser }) {
     setCurrentUser(data);
   }
 
+  const onLogOut = () => {
+    logOut();
+  }
+
   return (
     <main className="profile">
       <p className="profile__greeting">Привет, Кирилл!</p>
@@ -102,7 +106,7 @@ function Profile({ logOut, setCurrentUser }) {
               className="profile__exit"
               type="button"
               aria-label="Выйти из аккаунта"
-              onClick={logOut}
+              onClick={onLogOut}
             >
               Выйти из аккаунта
             </button>

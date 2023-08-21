@@ -15,7 +15,9 @@ function Movies({
   isToggled,
   setIsToggled,
   handleSearch,
-  handleCardLike,
+  handleLikeCard,
+  isLikedCard,
+  handleDeleteCard,
 }) {
   return (
     <main className="movies">
@@ -32,7 +34,9 @@ function Movies({
         <MoviesCardList
           cards={cards}
           moviesError={moviesError}
-          handleCardLike={handleCardLike}
+          handleLikeCard={handleLikeCard}
+          isLikedCard={isLikedCard}
+          handleDeleteCard={handleDeleteCard}
         />
       )}
       <MoreBtn loadMore={loadMore} cards={cards} elementNum={elementNum} />

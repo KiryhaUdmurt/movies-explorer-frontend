@@ -1,12 +1,16 @@
-import React, { useContext, useEffect, useState } from "react";
+import React from "react";
 import "./MoviesCard.css";
 import { useLocation } from "react-router-dom";
-import { CurrentUserContext } from "../../contexts/CurrentUserContext";
 
-function MoviesCard({ card, onMovieClick }) {
-  const currentUser = useContext(CurrentUserContext);
+function MoviesCard({
+  card,
+  onMovieClick,
+  isLikedCard,
+  handleDeleteCard,
+}) {
   const location = useLocation();
-  const [isLiked, setIsLiked] = useState(false);
+  const isLiked = isLikedCard(card);
+
   const movieLikeBtnClassName = `movie__like-btn ${
     isLiked && "movie__like-btn_active"
   }`;
@@ -14,12 +18,13 @@ function MoviesCard({ card, onMovieClick }) {
   const hours = Math.floor(card.duration / 60);
   const minutes = card.duration - hours * 60;
 
-  function handleCardClick() {
-    setIsLiked((isLiked) => !isLiked)
+  function onLikeCard() {
     onMovieClick(card);
   }
 
-
+  function onDeleteCard() {
+    handleDeleteCard(card);
+  }
 
   return (
     <div className="movie">
@@ -27,10 +32,15 @@ function MoviesCard({ card, onMovieClick }) {
         className="movie__trailer-link"
         href={card.trailerLink}
         target="_blank"
+        rel="noreferrer"
       >
         <img
           className="movie__image"
-          src={`https://api.nomoreparties.co/${card.image.url}`}
+          src={
+            location.pathname === "/movies"
+              ? `https://api.nomoreparties.co/${card.image.url}`
+              : card.image
+          }
           alt="Превью фильма"
         />
       </a>
@@ -42,7 +52,7 @@ function MoviesCard({ card, onMovieClick }) {
             className={movieLikeBtnClassName}
             type="button"
             aria-label="В избранное"
-            onClick={handleCardClick}
+            onClick={!isLiked ? onLikeCard : onDeleteCard}
           />
         )}
         {location.pathname === "/saved-movies" && (
@@ -50,6 +60,7 @@ function MoviesCard({ card, onMovieClick }) {
             className="movie__delete-btn"
             type="button"
             aria-label="Удалить фильм"
+            onClick={onDeleteCard}
           />
         )}
         <p className="movie__duration">

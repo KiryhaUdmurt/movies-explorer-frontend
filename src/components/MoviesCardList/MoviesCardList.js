@@ -8,10 +8,13 @@ function MoviesCardList({
   onMovieLike,
   onMovieDelete,
   moviesError,
-  handleCardLike,
-  likedCards
+  handleLikeCard,
+  isLikedCard,
+  handleDislikeCard,
+  likedCards,
+  setLikedCards,
+  handleDeleteCard,
 }) {
-
   const location = useLocation();
   return (
     <>
@@ -26,9 +29,9 @@ function MoviesCardList({
                       <li className="cardlist__item movie" key={card.id}>
                         <MoviesCard
                           card={card}
-                          onMovieClick={handleCardLike}
-                          // onMovieLike={onMovieLike}
-                          onMovieDelete={onMovieDelete}
+                          onMovieClick={handleLikeCard}
+                          isLikedCard={isLikedCard}
+                          handleDeleteCard={handleDeleteCard}
                         />
                       </li>
                     ))}
@@ -49,9 +52,9 @@ function MoviesCardList({
                       <li className="cardlist__item movie" key={card.movieId}>
                         <MoviesCard
                           card={card}
-                          onMovieClick={handleCardLike}
-                          // onMovieLike={onMovieLike}
-                          onMovieDelete={onMovieDelete}
+                          handleDeleteCard={handleDeleteCard}
+                          setLikedCards={setLikedCards}
+                          isLikedCard={isLikedCard}
                         />
                       </li>
                     ))}
@@ -64,26 +67,6 @@ function MoviesCardList({
               )}
             </>
           )}
-          {/* {cards.length ? (
-            <section className="cardlist">
-              <ul className="cardlist__items">
-                {cards.map((card) => (
-                  <li className="cardlist__item movie" key={card.id}>
-                    <MoviesCard
-                      card={card}
-                      onMovieClick={onMovieClick}
-                      onMovieLike={onMovieLike}
-                      onMovieDelete={onMovieDelete}
-                    />
-                  </li>
-                ))}
-              </ul>
-            </section>
-          ) : (
-            <section className="cardlist__no-results">
-              <p className="cardlist__no-results-text">Ничего не найдено</p>
-            </section>
-          )} */}
         </>
       ) : (
         <section className="cardlist__req-error">
@@ -93,27 +76,6 @@ function MoviesCardList({
           </p>
         </section>
       )}
-
-      {/* {cards.length ? (
-        <section className="cardlist">
-          <ul className="cardlist__items">
-            {cards.map((card) => (
-              <li className="cardlist__item movie" key={card.id}>
-                <MoviesCard
-                  card={card}
-                  onMovieClick={onMovieClick}
-                  onMovieLike={onMovieLike}
-                  onMovieDelete={onMovieDelete}
-                />
-              </li>
-            ))}
-          </ul>
-        </section>
-      ) : (
-        <section className="cardlist__no-results">
-          <p className="cardlist__no-results-text">Ничего не найдено</p>
-        </section>
-      )} */}
     </>
   );
 }
