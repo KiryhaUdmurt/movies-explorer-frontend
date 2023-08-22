@@ -170,7 +170,7 @@ function App() {
             .concat(item.nameRU, item.nameEN)
             .toString()
             .toLowerCase()
-            .includes(search)
+            .includes(search.toLowerCase())
         );
         const foundMovies = isToggled
           ? filteredMovies.filter((item) => item.duration <= 40)
@@ -201,7 +201,7 @@ function App() {
           .concat(card.nameRU, card.nameEN)
           .toString()
           .toLowerCase()
-          .includes(savedMoviesSearch)
+          .includes(savedMoviesSearch.toLowerCase())
       )
     );
   };
