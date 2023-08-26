@@ -3,8 +3,9 @@ import Logo from "../Logo/Logo";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import { useEffect } from "react";
+import { EMAIL_REGEXP } from "../../utils/constants";
 
-function Register({ registerUser, isLoggedIn }) {
+function Register({ registerUser, isLoggedIn, reqError, setReqError }) {
   const navigate = useNavigate();
 
   const {
@@ -20,6 +21,7 @@ function Register({ registerUser, isLoggedIn }) {
     console.log(data);
     registerUser(data);
     reset();
+    setReqError("")
   };
 
   useEffect(() => {
@@ -73,7 +75,7 @@ function Register({ registerUser, isLoggedIn }) {
               {...register("email", {
                 required: "Обязательное поле",
                 pattern: {
-                  value: /^[A-Z0-9._%+-]+@[A-Z0-9-]+.+.[A-Z]{2,4}$/i,
+                  value: EMAIL_REGEXP,
                   message: "Введите корректный e-mail",
                 },
               })}
@@ -109,6 +111,9 @@ function Register({ registerUser, isLoggedIn }) {
                 {errors?.password?.message || "Что-то пошло не так.."}
               </span>
             )}
+          </div>
+          <div className="signup__req-error-container">
+            <p className="signup__req-error">{reqError}</p>
           </div>
           <button
             className={`signup__submit ${

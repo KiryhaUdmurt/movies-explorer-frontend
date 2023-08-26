@@ -31,15 +31,17 @@ function Movies({
       {isLoading ? (
         <Preloader />
       ) : (
-        <MoviesCardList
-          cards={cards}
-          moviesError={moviesError}
-          handleLikeCard={handleLikeCard}
-          isLikedCard={isLikedCard}
-          handleDeleteCard={handleDeleteCard}
-        />
+        <>
+          <MoviesCardList
+            cards={cards}
+            moviesError={moviesError}
+            handleLikeCard={handleLikeCard}
+            isLikedCard={isLikedCard}
+            handleDeleteCard={handleDeleteCard}
+          />
+          <MoreBtn loadMore={loadMore} cards={cards} elementNum={elementNum} />
+        </>
       )}
-      <MoreBtn loadMore={loadMore} cards={cards} elementNum={elementNum} />
     </main>
   );
 }

@@ -22,6 +22,7 @@
   display: flex;
   flex-direction: column;
   width: 396px;
+  position: relative;
 }
 
 .signup__label {
@@ -64,6 +65,19 @@
 .signup__error-container {
   height: 24px;
   position: relative;
+}
+
+.signup__req-error-container {
+  display: flex;
+  align-items: center;
+  position: absolute;
+  top: 300px;
+  left: 20px;
+}
+
+.signup__req-error {
+  margin: 0;
+  color: #ee3465;
 }
 
 .signup__error {
@@ -162,5 +176,11 @@
 
   .signup__login-btn {
     font-size: 12px;
+  }
+
+  .signup__req-error-container {
+    top: 370px;
+    left: 0px;
+    text-align: center;
   }
 }

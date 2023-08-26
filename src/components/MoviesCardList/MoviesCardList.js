@@ -4,13 +4,9 @@ import "./MoviesCardList.css";
 
 function MoviesCardList({
   cards,
-  onMovieClick,
-  onMovieLike,
-  onMovieDelete,
   moviesError,
   handleLikeCard,
   isLikedCard,
-  handleDislikeCard,
   likedCards,
   setLikedCards,
   handleDeleteCard,

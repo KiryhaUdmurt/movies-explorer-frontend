@@ -9,7 +9,7 @@ import Register from "../Register/Register";
 import SavedMovies from "../SavedMovies/SavedMovies";
 import "./App.css";
 import "../../index.css";
-import { Route, Routes, useNavigate } from "react-router-dom";
+import { Route, Routes, useLocation, useNavigate } from "react-router-dom";
 import NotFound from "../NotFound/NotFound";
 import Menu from "../Menu/Menu";
 import { CurrentUserContext } from "../../contexts/CurrentUserContext";
@@ -17,12 +17,17 @@ import { moviesApi } from "../../utils/MoviesApi";
 import { mainApi } from "../../utils/MainApi";
 import * as auth from "../../utils/auth";
 import ProtectedRouteElement from "../ProtectedRoute/ProtectedRoute";
+import {
+  REQ_ERRORS_TXT,
+  SCREEN_SIZE_L,
+  SCREEN_SIZE_S,
+} from "../../utils/constants";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [currentUser, setCurrentUser] = useState({});
   const [cards, setCards] = useState(() => {
-    const prevCards = JSON.parse(localStorage.getItem("foundMovies"));
+    const prevCards = JSON.parse(localStorage.getItem("allCards"));
     return prevCards || [];
   });
   const [likedCards, setLikedCards] = useState([]);
@@ -41,21 +46,24 @@ function App() {
   const [isToggledSavedCards, setIsToggledSavedCards] = useState(false);
   const screenElement = document.getElementById("root");
   const navigate = useNavigate();
+  const location = useLocation();
+  const pageToGo = location.pathname;
+  const isOnSavedMoviesPage = location.pathname === "/saved-movies";
+  const [reqError, setReqError] = useState("");
 
-  useEffect(() => {
+  // ПОЛУЧЕНИЕ СОХРАНЕННЫХ ФИЛЬМОВ
+  const getSavedMovies = () => {
     mainApi
       .getSavedMovies()
-      .then((cards) => {
-        const ownFilms = cards
-          .filter((item) => item.owner === currentUser._id)
-          .reverse();
-        setLikedCards(ownFilms);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, [currentUser]);
+      .then((movies) => setLikedCards(movies))
+      .catch((err) => console.log(err));
+  };
 
+  useEffect(() => {
+    setSavedMoviesSearch("");
+  }, [isOnSavedMoviesPage]);
+
+  // ПРОСТАВЛЕНИЕ ЛАЙКА
   const handleLikeCard = (card) => {
     mainApi
       .addMovie(card)
@@ -66,15 +74,9 @@ function App() {
         console.log(err);
       });
   };
-
-  const isLikedCard = (card) => {
-    return likedCards.some((item) => item.movieId === card.id);
-  };
-
+  //  СНЯТИЕ ЛАЙКА
   const handleDeleteCard = (card) => {
     const cardToDelete = likedCards.find((item) => item.movieId === card.id);
-    console.log(card);
-    console.log(cardToDelete);
     mainApi
       .deleteMovie(cardToDelete ? cardToDelete._id : card._id)
       .then(() => {
@@ -88,11 +90,15 @@ function App() {
       })
       .catch((err) => console.log(err));
   };
+  // ПОЛУЧЕНИЕ ПОЛЬЗОВАТЕЛЯ
+  const getUser = () => {
+    mainApi
+      .getUser()
+      .then((user) => setCurrentUser(user))
+      .catch((err) => console.log(err));
+  };
 
-  useEffect(() => {
-    checkToken();
-  }, []);
-
+  // ПРОВЕРКА ТОКЕНВ
   const checkToken = () => {
     if (localStorage.getItem("token")) {
       const token = localStorage.getItem("token");
@@ -101,40 +107,59 @@ function App() {
           .getContent(token)
           .then((user) => {
             if (user) {
-              setCurrentUser(user);
               setIsLoggedIn(true);
-              // navigate("/movies", { replace: true });
+              getUser();
+              setReqError("");
+              getSavedMovies();
+              navigate(pageToGo);
             }
           })
           .catch((err) => console.log(err));
+        setReqError(REQ_ERRORS_TXT.authErr);
       }
     }
   };
 
-  const registerUser = ({ email, password, name }) => {
-    auth
-      .register(email, password, name)
-      .then((res) => {
-        navigate("/signin", { replace: true });
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
+  useEffect(() => {
+    checkToken();
+  }, []);
 
+  // ЛОГИН
   const authorizeUser = ({ email, password }) => {
     auth
       .authorize(email, password)
       .then((res) => {
         localStorage.setItem("token", res.token);
         setIsLoggedIn(true);
+        getUser();
         navigate("/movies", { replace: true });
+        getSavedMovies();
+        setReqError("");
       })
       .catch((err) => {
         console.log(err);
+        setReqError(REQ_ERRORS_TXT.loginErr);
       });
   };
 
+  // РЕГИСТРАЦИЯ
+  const registerUser = ({ email, password, name }) => {
+    auth
+      .register(email, password, name)
+      .then((res) => {
+        authorizeUser({ email, password });
+      })
+      .catch((err) => {
+        console.log(err);
+        if (err.includes("409")) {
+          setReqError(REQ_ERRORS_TXT.emailErr);
+        } else {
+          setReqError(REQ_ERRORS_TXT.registerErr);
+        }
+      });
+  };
+
+  // ВЫХОД ИЗ АККАУНТА
   const logOut = () => {
     window.localStorage.clear();
     localStorage.clear("token");
@@ -145,88 +170,99 @@ function App() {
     setCurrentUser({});
   };
 
+  // ОТОБРАЖЕНИЕ КОЛ-ВА КАРТОЧЕК В ЗАВИСИМОСТИ ОТ РАЗРЕШЕНИЯ ЭКРАНА
   const initialElements = () => {
-    if (screenElement.clientWidth >= 1280) {
+    if (screenElement.clientWidth >= SCREEN_SIZE_L) {
       return 12;
     } else if (
-      screenElement.clientWidth < 1280 &&
-      screenElement.clientWidth >= 651
+      screenElement.clientWidth < SCREEN_SIZE_L &&
+      screenElement.clientWidth >= SCREEN_SIZE_S
     ) {
       return 8;
     } else {
       return 5;
     }
   };
+
   const [elementNum, setElementNum] = useState(initialElements);
 
-  const handleSearch = () => {
-    setIsLoading(true);
-    moviesApi
-      .getAllCards()
-      .then((movies) => {
-        let langConcatArr = [];
-        const filteredMovies = movies.filter((item) =>
-          langConcatArr
+  useEffect(() => {
+    setElementNum(initialElements);
+  }, [search]);
+
+  // ПОЛУЧЕНИЕ ВСЕХ КАРТОЧЕК И ФИЛЬТРАЦИЯ
+  const handleFirstSearch = () => {
+    if (!localStorage.getItem("allCards")) {
+      setIsLoading(true);
+      moviesApi
+        .getAllCards()
+        .then((movies) => {
+          setCards(movies);
+          localStorage.setItem("allCards", JSON.stringify(movies));
+        })
+        .catch((err) => {
+          console.log(err);
+          setMovieError(true);
+        })
+        .finally(() => {
+          setIsLoading(false);
+          setElementNum(initialElements);
+        });
+    }
+  };
+
+  const filterMain = (cards) => {
+    let langConcatArr = [];
+    return cards.filter((item) =>
+      isToggled
+        ? langConcatArr
             .concat(item.nameRU, item.nameEN)
             .toString()
             .toLowerCase()
-            .includes(search.toLowerCase())
-        );
-        const foundMovies = isToggled
-          ? filteredMovies.filter((item) => item.duration <= 40)
-          : filteredMovies;
-
-        localStorage.setItem("foundMovies", JSON.stringify(foundMovies));
-        setCards(foundMovies);
-      })
-      .catch((err) => {
-        console.log(err);
-        setMovieError(true);
-      })
-      .finally(() => {
-        setIsLoading(false);
-        setElementNum(initialElements);
-      });
-  };
-
-  const filteredMovies = isToggled
-    ? cards.filter((item) => item.duration <= 40)
-    : cards;
-
-  const handleSearchSavedCards = () => {
-    let savedCardsArr = [];
-    setLikedCards(
-      likedCards.filter((card) =>
-        savedCardsArr
-          .concat(card.nameRU, card.nameEN)
-          .toString()
-          .toLowerCase()
-          .includes(savedMoviesSearch.toLowerCase())
-      )
+            .includes(search.toLocaleLowerCase()) && item.duration <= 40
+        : langConcatArr
+            .concat(item.nameRU, item.nameEN)
+            .toString()
+            .toLowerCase()
+            .includes(search.toLocaleLowerCase())
     );
   };
-  const filteredSavedFilms = isToggledSavedCards
-    ? likedCards.filter((card) => card.duration <= 40)
-    : likedCards;
 
-  // let savedCardsArr = [];
-  // const filteredSavedFilms = likedCards.filter(
-  //   (card) =>
-  //     (isToggledSavedCards ? card.duration <= 40 : true) &&
-  //     savedCardsArr
-  //       .concat(card.nameRU, card.nameEN)
-  //       .toString()
-  //       .toLowerCase()
-  //       .includes(savedMoviesSearch)
-  // );
+  // ФИЛЬТРАЦИЯ ПО СОХРАНЕННЫМ КАРТОЧКАМ
+  const handleSearchSaved = (likedCards) => {
+    let savedCardsArr = [];
+    return likedCards.filter((item) =>
+      isToggledSavedCards
+        ? savedCardsArr
+            .concat(item.nameRU, item.nameEN)
+            .toString()
+            .toLowerCase()
+            .includes(savedMoviesSearch.toLowerCase()) &&
+          item.duration <= 40 &&
+          item.owner === currentUser._id
+        : savedCardsArr
+            .concat(item.nameRU, item.nameEN)
+            .toString()
+            .toLowerCase()
+            .includes(savedMoviesSearch.toLowerCase()) &&
+          item.owner === currentUser._id
+    );
+  };
 
+  // СТАТУС ФИЛЬМА
+  const isLikedCard = (card) => {
+    return handleSearchSaved(likedCards).some(
+      (item) => item.movieId === card.id
+    );
+  };
 
+  // ОТОБРАЗИТЬ БОЛЬШЕ ФИЛЬМОВ
   const loadMore = () => {
-    if (screenElement.clientWidth >= 1280) {
+    if (screenElement.clientWidth >= SCREEN_SIZE_L) {
       setElementNum(elementNum + 3);
     } else if (
-      screenElement.clientWidth < 1280 &&
-      screenElement.clientWidth >= 651
+      screenElement.clientWidth < SCREEN_SIZE_L &&
+      screenElement.clientWidth >= SCREEN_SIZE_S
     ) {
       setElementNum(elementNum + 2);
     } else {
@@ -250,7 +286,7 @@ function App() {
               <ProtectedRouteElement
                 isLoggedIn={isLoggedIn}
                 element={Movies}
-                cards={filteredMovies.slice(0, elementNum)}
+                cards={filterMain(cards).slice(0, elementNum)}
                 search={search}
                 setSearch={setSearch}
                 moviesError={movieError}
@@ -259,7 +295,7 @@ function App() {
                 elementNum={elementNum}
                 isToggled={isToggled}
                 setIsToggled={setIsToggled}
-                handleSearch={handleSearch}
+                handleSearch={handleFirstSearch}
                 handleLikeCard={handleLikeCard}
                 isLikedCard={isLikedCard}
                 handleDeleteCard={handleDeleteCard}
@@ -274,10 +310,10 @@ function App() {
                 isLoggedIn={isLoggedIn}
                 handleLikeCard={handleLikeCard}
                 isLikedCard={isLikedCard}
-                likedCards={filteredSavedFilms}
+                likedCards={handleSearchSaved(likedCards)}
                 setLikedCards={setLikedCards}
                 handleDeleteCard={handleDeleteCard}
-                handleSearchSavedCards={handleSearchSavedCards}
+                handleSearchSavedCards={handleSearchSaved}
                 isToggledSavedCards={isToggledSavedCards}
                 setIsToggledSavedCards={setIsToggledSavedCards}
                 savedMoviesSearch={savedMoviesSearch}
@@ -293,19 +329,31 @@ function App() {
                 isLoggedIn={isLoggedIn}
                 logOut={logOut}
                 setCurrentUser={setCurrentUser}
+                reqError={reqError}
+                setReqError={setReqError}
               />
             }
           />
           <Route
             path="/signin"
             element={
-              <Login authorizeUser={authorizeUser} isLoggedIn={isLoggedIn} />
+              <Login
+                authorizeUser={authorizeUser}
+                isLoggedIn={isLoggedIn}
+                reqError={reqError}
+                setReqError={setReqError}
+              />
             }
           />
           <Route
             path="/signup"
             element={
-              <Register registerUser={registerUser} isLoggedIn={isLoggedIn} />
+              <Register
+                registerUser={registerUser}
+                isLoggedIn={isLoggedIn}
+                reqError={reqError}
+                setReqError={setReqError}
+              />
             }
           />
           <Route path="*" element={<NotFound />} />

@@ -20,7 +20,7 @@ function SearchForm({
   const toggleRef = useRef(false);
   const savedCardsToggleRef = useRef(false);
   const [searchDirty, setSearchDirty] = useState(false);
-  const [searchError, setSearchError] = useState("Введите ключевое слово");
+  const [searchError, setSearchError] = useState("");
   const location = useLocation();
   const moviesPath = location.pathname === "/movies";
 
@@ -29,15 +29,17 @@ function SearchForm({
   };
 
   const handleMainSearch = (e) => {
-    setSearch(e.target.value);
-    e.target.value.length === 0
+    const value = e.target.value;
+    setSearch(value);
+    localStorage.setItem("searchTxt", value);
+    !value
       ? setSearchError("Введите ключевое слово")
       : setSearchError("");
   };
 
   const handleSavedSearch = (e) => {
     setSavedMoviesSearch(e.target.value);
-    e.target.value.length === 0
+    !e.target.value
       ? setSearchError("Введите ключевое слово")
       : setSearchError("");
   };
