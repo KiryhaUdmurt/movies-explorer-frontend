@@ -18,6 +18,11 @@ import { mainApi } from "../../utils/MainApi";
 import * as auth from "../../utils/auth";
 import ProtectedRouteElement from "../ProtectedRoute/ProtectedRoute";
 import {
+  LOAD_12,
+  LOAD_2_MORE,
+  LOAD_3_MORE,
+  LOAD_5,
+  LOAD_8,
   REQ_ERRORS_TXT,
   SCREEN_SIZE_L,
   SCREEN_SIZE_S,
@@ -61,6 +66,7 @@ function App() {
 
   useEffect(() => {
     setSavedMoviesSearch("");
+    setIsToggledSavedCards(false);
   }, [isOnSavedMoviesPage]);
 
   // ПРОСТАВЛЕНИЕ ЛАЙКА
@@ -76,7 +82,9 @@ function App() {
   };
   //  СНЯТИЕ ЛАЙКА
   const handleDeleteCard = (card) => {
-    const cardToDelete = likedCards.find((item) => item.movieId === card.id);
+    const cardToDelete = likedCards.find(
+      (item) => item.movieId === card.id && item.owner === currentUser._id
+    );
     mainApi
       .deleteMovie(cardToDelete ? cardToDelete._id : card._id)
       .then(() => {
@@ -173,14 +181,14 @@ function App() {
   // ОТОБРАЖЕНИЕ КОЛ-ВА КАРТОЧЕК В ЗАВИСИМОСТИ ОТ РАЗРЕШЕНИЯ ЭКРАНА
   const initialElements = () => {
     if (screenElement.clientWidth >= SCREEN_SIZE_L) {
-      return 12;
+      return LOAD_12;
     } else if (
       screenElement.clientWidth < SCREEN_SIZE_L &&
       screenElement.clientWidth >= SCREEN_SIZE_S
     ) {
-      return 8;
+      return LOAD_8;
     } else {
-      return 5;
+      return LOAD_5;
     }
   };
 
@@ -259,14 +267,14 @@ function App() {
   // ОТОБРАЗИТЬ БОЛЬШЕ ФИЛЬМОВ
   const loadMore = () => {
     if (screenElement.clientWidth >= SCREEN_SIZE_L) {
-      setElementNum(elementNum + 3);
+      setElementNum(elementNum + LOAD_3_MORE);
     } else if (
       screenElement.clientWidth < SCREEN_SIZE_L &&
       screenElement.clientWidth >= SCREEN_SIZE_S
     ) {
-      setElementNum(elementNum + 2);
+      setElementNum(elementNum + LOAD_2_MORE);
     } else {
-      setElementNum(elementNum + 2);
+      setElementNum(elementNum + LOAD_2_MORE);
     }
   };
 

@@ -13,4 +13,11 @@ export const PROFILE_CHANGE_STATUS = {
 export const SCREEN_SIZE_L = 1280;
 export const SCREEN_SIZE_S = 651;
 
+export const LOAD_12 = 12;
+export const LOAD_8 = 8;
+export const LOAD_5 = 12;
+
+export const LOAD_3_MORE = 3;
+export const LOAD_2_MORE = 2;
+
 export const EMAIL_REGEXP = /^[A-Z0-9._%+-]+@[A-Z0-9-]+.+.[A-Z]{2,4}$/i;

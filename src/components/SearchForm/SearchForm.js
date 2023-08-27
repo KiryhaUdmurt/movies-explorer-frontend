@@ -14,6 +14,7 @@ function SearchForm({
   handleSearchSavedCards,
   savedMoviesSearch,
   setSavedMoviesSearch,
+  likedCards
 }) {
   const searchRef = useRef("");
   const savedSearchRef = useRef("");
@@ -54,7 +55,7 @@ function SearchForm({
   };
 
   const searchSaved = () => {
-    handleSearchSavedCards();
+    handleSearchSavedCards(likedCards);
   };
 
   const submitHandler = (e) => {

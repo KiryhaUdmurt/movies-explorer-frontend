@@ -22,6 +22,7 @@ function SavedMovies({
         handleSearchSavedCards={handleSearchSavedCards}
         savedMoviesSearch={savedMoviesSearch}
         setSavedMoviesSearch={setSavedMoviesSearch}
+        likedCards={likedCards}
       />
       <MoviesCardList
         handleLikeCard={handleLikeCard}

@@ -25,6 +25,7 @@ function Profile({ logOut, setCurrentUser, reqError, setReqError }) {
       })
       .catch((err) => {
         console.log(err);
+        setActiveInput(false)
         setReqError(PROFILE_CHANGE_STATUS.error);
         setTimeout(() => setReqError(""), 4000);
       });
