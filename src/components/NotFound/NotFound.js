@@ -5,7 +5,7 @@ function NotFound() {
   const navigate = useNavigate();
 
   function goBack() {
-    navigate(-1, {replace: true});
+    navigate(-2, {replace: true});
   }
   return (
     <main className="not-found">

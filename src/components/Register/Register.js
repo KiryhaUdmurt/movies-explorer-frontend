@@ -1,9 +1,13 @@
 import "./Register.css";
 import Logo from "../Logo/Logo";
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useEffect } from "react";
+import { EMAIL_REGEXP } from "../../utils/constants";
 
-function Register() {
+function Register({ registerUser, isLoggedIn, reqError, setReqError }) {
+  const navigate = useNavigate();
+
   const {
     register,
     formState: { errors, isValid },
@@ -15,8 +19,16 @@ function Register() {
 
   const onSubmit = (data) => {
     console.log(data);
+    registerUser(data);
     reset();
+    setReqError("")
   };
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      navigate("/movies", { replace: true });
+    }
+  });
 
   return (
     <main className="signup">
@@ -27,7 +39,9 @@ function Register() {
           <label className="signup__label">
             Имя
             <input
-              className={`signup__input ${errors?.name ? "signup__input_error" : ""}`}
+              className={`signup__input ${
+                errors?.name ? "signup__input_error" : ""
+              }`}
               type="text"
               placeholder="Введите ваше имя"
               {...register("name", {
@@ -53,15 +67,17 @@ function Register() {
           <label className="signup__label">
             E-mail
             <input
-              className={`signup__input ${errors?.email ? "signup__input_error" : ""}`}
+              className={`signup__input ${
+                errors?.email ? "signup__input_error" : ""
+              }`}
               type="email"
               placeholder="Введите вашу почту"
               {...register("email", {
                 required: "Обязательное поле",
                 pattern: {
-                  value: /^[A-Z0-9._%+-]+@[A-Z0-9-]+.+.[A-Z]{2,4}$/i,
-                  message: "Введите корректный e-mail"
-                }
+                  value: EMAIL_REGEXP,
+                  message: "Введите корректный e-mail",
+                },
               })}
             />
           </label>
@@ -75,7 +91,9 @@ function Register() {
           <label className="signup__label">
             Пароль
             <input
-              className={`signup__input ${errors?.password ? "signup__input_error" : ""}`}
+              className={`signup__input ${
+                errors?.password ? "signup__input_error" : ""
+              }`}
               type="password"
               placeholder="Придумайте пароль"
               {...register("password", {
@@ -94,8 +112,13 @@ function Register() {
               </span>
             )}
           </div>
+          <div className="signup__req-error-container">
+            <p className="signup__req-error">{reqError}</p>
+          </div>
           <button
-            className={`signup__submit ${!isValid ? "signup__submit_disabled" : ""}`}
+            className={`signup__submit ${
+              !isValid ? "signup__submit_disabled" : ""
+            }`}
             type="submit"
             aria-label="Зарегистрироваться"
             disabled={!isValid}

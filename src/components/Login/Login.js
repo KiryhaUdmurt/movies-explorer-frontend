@@ -1,9 +1,13 @@
 import "./Login.css";
 import Logo from "../Logo/Logo";
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useEffect } from "react";
+import { EMAIL_REGEXP } from "../../utils/constants";
 
-function Login() {
+function Login({ authorizeUser, isLoggedIn, reqError, setReqError }) {
+  const navigate = useNavigate();
+
   const {
     register,
     formState: { errors, isValid },
@@ -14,8 +18,17 @@ function Login() {
   });
 
   const onSubmit = (data) => {
+    authorizeUser(data);
     reset();
+    setReqError("");
   };
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      navigate("/movies", { replace: true });
+    }
+  });
+
   return (
     <main className="signin">
       <div className="signin__flexbox">
@@ -33,7 +46,7 @@ function Login() {
               {...register("email", {
                 required: "Обязательное поле",
                 pattern: {
-                  value: /^[A-Z0-9._%+-]+@[A-Z0-9-]+.+.[A-Z]{2,4}$/i,
+                  value: EMAIL_REGEXP,
                   message: "Введите корректный e-mail",
                 },
               })}
@@ -69,6 +82,9 @@ function Login() {
                 {errors?.password?.message || "Что-то пошло не так.."}
               </span>
             )}
+          </div>
+          <div className="signin__req-error-container">
+            <p className="signin__req-error">{reqError}</p>
           </div>
           <button
             className={`signin__submit ${
